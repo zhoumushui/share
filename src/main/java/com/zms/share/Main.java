@@ -39,24 +39,26 @@ public class Main extends Activity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, adapterData);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 1:
-                        StartShare(IntentType.TEXT_PLAIN);
-                        break;
-                    case 2:
-                        StartShare(IntentType.IMAGE_BMP);
-                        break;
-                    case 3:
-                        StartShare(IntentType.AUDIO_WMA);
-                        break;
-                    default:
-                        Toast.makeText(Main.this, "", Toast.LENGTH_SHORT).show();
-                }
+        listView.setOnItemClickListener(new MyOnItemClickListener());
+    }
+
+    class MyOnItemClickListener implements AdapterView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            switch (position) {
+                case 1:
+                    StartShare(IntentType.TEXT_PLAIN);
+                    break;
+                case 2:
+                    StartShare(IntentType.IMAGE_BMP);
+                    break;
+                case 3:
+                    StartShare(IntentType.AUDIO_WMA);
+                    break;
+                default:
+                    Toast.makeText(Main.this, "Select MIME Type", Toast.LENGTH_SHORT).show();
             }
-        });
+        }
     }
 
     private void StartShare(IntentType intentType) {
@@ -81,7 +83,7 @@ public class Main extends Activity {
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         intent.putExtra(Intent.EXTRA_TEXT, content);
 
-        Intent chooserIntent = Intent.createChooser(intent, "Select app to share");
+        Intent chooserIntent = Intent.createChooser(intent, "Select App to Share");
         if (chooserIntent == null) {
             return;
         }
